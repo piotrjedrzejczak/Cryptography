@@ -29,8 +29,8 @@ class CaesarZ26:
     @classmethod
     def cryptoanalysis(cls, encrypted, plain):
         for key in range(0,26):
-            if decrypted := cls.decrypt(encrypted, key).startswith(plain):
-                return key, cls.decrypt(encrypted, key)
+            if (decrypted := cls.decrypt(encrypted, key)).startswith(plain):
+                return key, decrypted
         return -1, ''
 
 

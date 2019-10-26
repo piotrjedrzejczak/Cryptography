@@ -47,8 +47,8 @@ class AffineZ26:
     def cryptoanalysis(cls, encrypted, plain):
         for key1 in cls.__inverses.keys():
             for key2 in cls.__inverted_alphabet.keys():
-                if decrypted := cls.decrypt(encrypted, key1, key2).startswith(plain):
-                    return key1, key2, cls.decrypt(encrypted, key1, key2)
+                if (decrypted := cls.decrypt(encrypted, key1, key2)).startswith(plain):
+                    return key1, key2, decrypted
         return -1, -1, ''
 
 
