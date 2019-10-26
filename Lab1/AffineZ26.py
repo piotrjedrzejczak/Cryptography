@@ -54,7 +54,7 @@ class AffineZ26:
 
     @classmethod
     def bruteforce(cls, text):
-        results = str()
+        results = ''
         for key1 in cls.__inverses.keys():
             for key2 in cls.__inverted_alphabet.keys():
                 results += cls.decrypt(text, key1, key2) + '\n'
