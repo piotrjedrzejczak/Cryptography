@@ -1,4 +1,4 @@
-import sys
+from sys import argv
 from AffineZ26 import *
 from CaesarZ26 import *
 from Cipher import *
@@ -34,4 +34,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main(argv[1:])
