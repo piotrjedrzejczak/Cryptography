@@ -1,6 +1,7 @@
 from string import ascii_lowercase
+from Cipher import Cipher
 
-class CaesarZ26:
+class CaesarZ26(Cipher):
 
     __charset = set(ascii_lowercase)
 
