@@ -1,0 +1,10 @@
+.vscode/settings.json
+Lab1/crypto.txt
+Lab1/decrypt.txt
+Lab1/extra.txt
+Lab1/key.txt
+Lab1/new-key.txt
+Lab1/plain.txt
+Lab1/__pycache__/AffineZ26.cpython-38.pyc
+Lab1/__pycache__/CaesarZ26.cpython-38.pyc
+Lab1/test.py
