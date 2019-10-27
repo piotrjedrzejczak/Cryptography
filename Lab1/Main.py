@@ -1,5 +1,9 @@
-from sys import argv, version
+from sys import argv, version_info
 from os import getcwd
+
+if version_info < (3, 8):
+    raise SystemError(f'You need at least version Python 3.8.0 to run this script {version_info.major}.{version_info.minor} is insufficient.')
+
 from src.Cipher import Cipher
 from src.CaesarZ26 import CaesarZ26
 from src.AffineZ26 import AffineZ26
@@ -14,7 +18,8 @@ FLAGS = { '-e', '-d', '-j', '-k' }
 
 def main(argv):
 
-
+    if version_info < (3, 8):
+        return f'You need at least version 3.8.0 to run this script, sorry.'
 
     if len(argv) != 2:
         raise ValueError('You need to pass exactly two arguments.')
