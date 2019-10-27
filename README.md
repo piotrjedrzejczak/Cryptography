@@ -2,6 +2,12 @@
 
 Python 3.8.0 or above
 
+Example:
+
+    Encrypt text with Ceasar's Cipher
+    `python3 main.py -c -e`
+
+
 Currently Supported Ciphers
 
     - Lab I
