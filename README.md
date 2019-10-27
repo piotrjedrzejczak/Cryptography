@@ -23,9 +23,9 @@
 
 #### Text Files
 
-    - *plain.txt*    > Plain text you would like to encrypt.
-    - *decrypt.txt*  > Decrypted text.
-    - *crypto.txt*   > Encrypted text.
-    - *key.txt*      > Input file for keys. In case of multiple keys delimit with [SPACE].
-    - *new-key.txt*  > Output file for keys found during cryptoanalysis.
-    - *extra.txt*    > Partially decrypted text used for cryptoanalysis.
+    - plain.txt    > Plain text you would like to encrypt.
+    - decrypt.txt  > Decrypted text.
+    - crypto.txt   > Encrypted text.
+    - key.txt      > Input file for keys. In case of multiple keys delimit with [SPACE].
+    - new-key.txt  > Output file for keys found during cryptoanalysis.
+    - extra.txt    > Partially decrypted text used for cryptoanalysis.
