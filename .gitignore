@@ -13,3 +13,6 @@ Lab1/__pycache__/Cipher.cpython-38.pyc
 Lab1/src/__pycache__/AffineZ26.cpython-38.pyc
 Lab1/src/__pycache__/CaesarZ26.cpython-38.pyc
 Lab1/src/__pycache__/Cipher.cpython-38.pyc
+Lab1/text_files/crypto.txt
+Lab1/text_files/extra.txt
+Lab1/text_files/key.txt

@@ -1,4 +1,4 @@
-from sys import argv
+from sys import argv, version
 from os import getcwd
 from src.Cipher import Cipher
 from src.CaesarZ26 import CaesarZ26
@@ -13,6 +13,8 @@ CIPHERS = {
 FLAGS = { '-e', '-d', '-j', '-k' }
 
 def main(argv):
+
+
 
     if len(argv) != 2:
         raise ValueError('You need to pass exactly two arguments.')
@@ -34,6 +36,7 @@ def main(argv):
         elif flag == '-d':
             text = read_file('crypto.txt')
             keys = [ int(key) for key in read_file('key.txt').split(' ') ]
+            if len(keys) == 1: keys = keys[0]
             decrypted = cipher.decrypt(text, keys)
             write_file(decrypted, 'decrypt.txt')
 
@@ -56,13 +59,13 @@ def read_file(filename):
     with open(getcwd()+'\\text_files\\'+filename, 'r') as ifile:
         text = ifile.read()
         if text == '':
-            raise ValueError('File {filename} is empty')
+            raise ValueError(f'File {filename} is empty')
         else:
             return text 
 
 def write_file(text, filename):
     with open(getcwd()+'\\text_files\\'+filename, 'w') as ofile:
-        open(getcwd()+'\\text_files\\'+filename, 'w').close() # clearing output file
+        open(getcwd()+'\\text_files\\'+filename, 'w').close() # clear output file
         ofile.write(text)
 
 
