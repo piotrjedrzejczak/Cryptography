@@ -1,5 +1,5 @@
 from string import ascii_lowercase
-from Cipher import Cipher
+from src.Cipher import Cipher
 
 class CaesarZ26(Cipher):
     __valid_keys = set(range(0,26))

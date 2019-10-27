@@ -1,5 +1,5 @@
 from string import ascii_lowercase
-from Cipher import Cipher
+from src.Cipher import Cipher
 
 class AffineZ26(Cipher):
     

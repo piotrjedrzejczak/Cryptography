@@ -1,8 +1,8 @@
 from sys import argv
 from os import getcwd
-from AffineZ26 import *
-from CaesarZ26 import *
-from Cipher import *
+from src.Cipher import Cipher
+from src.CaesarZ26 import CaesarZ26
+from src.AffineZ26 import AffineZ26
 
 
 CIPHERS = {
@@ -53,12 +53,16 @@ def main(argv):
             return f'Unidentified flag {argv[1]}'
 
 def read_file(filename):
-    with open(getcwd()+'\\'+filename) as ifile:
-        return ifile.read()
-
+    with open(getcwd()+'\\text_files\\'+filename, 'r') as ifile:
+        text = ifile.read()
+        if text == '':
+            raise ValueError('File {filename} is empty')
+        else:
+            return text 
 
 def write_file(text, filename):
-    with open(getcwd()+'\\'+filename, 'w') as ofile:
+    with open(getcwd()+'\\text_files\\'+filename, 'w') as ofile:
+        open(getcwd()+'\\text_files\\'+filename, 'w').close() # clearing output file
         ofile.write(text)
 
 
