@@ -1,12 +1,12 @@
 # Cryptography Class
 
-Python 3.8.0 or above
+###  > Python 3.8.0
 
-Example Usecase
+#### Example Usecase
 
     > python main.py -c -e  # Encrypt text with Ceasar's Cipher
 
-Currently Supported Ciphers
+#### Currently Supported Ciphers
 
     - Lab I
         - Caesar's Cipher (-c)
@@ -14,14 +14,14 @@ Currently Supported Ciphers
     - Lab II
         - Vigenere Cipher (-v)
 
-Functionalities
+#### Functionalities
 
     - Encryption (-e)
     - Decryption (-d)
     - Cryptoanalysis based on partially decrypted text (-j)
     - Bruteforce decryption (-k)
 
-Text Files
+#### Text Files
 
     - *plain.txt*    > Plain text you would like to encrypt.
     - *decrypt.txt*  > Decrypted text.
