@@ -28,12 +28,11 @@ def main(argv):
         if cipher in CIPHERS.keys() and flag in FLAGS:
             cipher = CIPHERS[cipher]
         else:
-            return f'Combination of this cipher {cipher} and this flag {flag} is not supported.'
+            raise ValueError(f'Combination of this cipher {cipher} and this flag {flag} is not supported.')
 
         if flag == '-e':
             text = read_file('plain.txt')
-            keys = [ int(key) for key in read_file('key.txt').split(' ') ]
-            if len(keys) == 1: keys = keys[0]
+            keys = get_keys(read_file('key.txt'))
             encrypted = cipher.encrypt(text, keys)
             write_file(encrypted, 'crypto.txt')
 
@@ -56,8 +55,6 @@ def main(argv):
             decryptions = cipher.bruteforce(encrypted)
             write_file(decryptions, 'decrypt.txt')
 
-        else:
-            return f'Unidentified flag {argv[1]}'
 
 def read_file(filename):
     with open(getcwd()+'\\text_files\\'+filename, 'r') as ifile:
@@ -67,12 +64,20 @@ def read_file(filename):
         else:
             return text 
 
+
 def write_file(text, filename):
     with open(getcwd()+'\\text_files\\'+filename, 'w') as ofile:
         open(getcwd()+'\\text_files\\'+filename, 'w').close() # clear output file
         ofile.write(text)
 
 
+def get_keys(text):
+    try:
+        keys = [int(key) for key in text.split(' ')]
+        return tuple(keys)
+    except ValueError:
+        raise ValueError('Provided keys are invalid')
+
+
 if __name__ == '__main__':
     main(argv[1:])
-    
