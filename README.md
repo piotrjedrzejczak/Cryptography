@@ -14,5 +14,5 @@ Functionalities
 
     - Encryption (-e)
     - Decryption (-d)
-    - Cryptoanalysis based on partialy decrypted text (-j)
+    - Cryptoanalysis based on partially decrypted text (-j)
     - Bruteforce decryption (-k)
