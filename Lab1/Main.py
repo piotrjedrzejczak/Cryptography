@@ -1,8 +1,10 @@
-from sys import argv, version_info
+from sys import argv
+from sys import version_info as vrs
 from os import getcwd
 
-if version_info < (3, 8):
-    raise SystemError(f'You need at least version Python 3.8.0 to run this script {version_info.major}.{version_info.minor} is insufficient.')
+if vrs < (3, 8):
+    raise SystemError(f'You need at least Python 3.8.0 to run this script. '
+                      f'Your current version {vrs.major}.{vrs.minor}.{vrs.micro}')
 
 from src.Cipher import Cipher
 from src.CaesarZ26 import CaesarZ26
@@ -17,9 +19,6 @@ CIPHERS = {
 FLAGS = { '-e', '-d', '-j', '-k' }
 
 def main(argv):
-
-    if version_info < (3, 8):
-        return f'You need at least version 3.8.0 to run this script, sorry.'
 
     if len(argv) != 2:
         raise ValueError('You need to pass exactly two arguments.')
@@ -76,3 +75,4 @@ def write_file(text, filename):
 
 if __name__ == '__main__':
     main(argv[1:])
+    
