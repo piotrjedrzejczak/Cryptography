@@ -1,16 +1,16 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
-class Cipher(abc.ABC):
+class Cipher(ABC):
     
-    @abc.abstractmethod
+    @abstractmethod
     def encrypt(self):
         pass
-    @abc.abstractmethod
+    @abstractmethod
     def decrypt(self):
         pass
-    @abc.abstractmethod
+    @abstractmethod
     def cryptoanalysis(self):
         pass
-    @abc.abstractmethod
+    @abstractmethod
     def bruteforce(self):
         pass
