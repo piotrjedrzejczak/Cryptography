@@ -2,3 +2,4 @@
 .vscode/launch.json
 *.pyc
 *.txt
+Lab1/cli.py

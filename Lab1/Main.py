@@ -1,11 +1,6 @@
+import click
 from sys import argv
-from sys import version_info as vrs
 from os import getcwd
-
-if vrs < (3, 8):
-    raise SystemError(f'You need at least Python 3.8.0 to run this script. '
-                      f'Your current version {vrs.major}.{vrs.minor}.{vrs.micro}')
-
 from src.Cipher import Cipher
 from src.CaesarZ26 import CaesarZ26
 from src.AffineZ26 import AffineZ26
@@ -88,4 +83,8 @@ def get_keys(text):
 
 
 if __name__ == '__main__':
+    from sys import version_info as vrs
+    if vrs < (3, 8):
+        raise SystemError('You need at least Python 3.8.0 to run this script. '
+                         f'Your current version {vrs.major}.{vrs.minor}.{vrs.micro}')
     main(argv[1:])
