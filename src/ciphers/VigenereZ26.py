@@ -120,12 +120,3 @@ class VigenereZ26(Cipher):
             if fsum(coincidences) / float(len(coincidences)) > 0.056:
                 return kwlen
         return 0
-
-
-with open(r"D:\Pyton\Cryptography\Lab1\text_files\plain.txt") as f:
-    text = f.read()
-text = text.replace("\n", "").replace(" ", "").replace(".", "").lower()
-c = VigenereZ26()
-enc = c.encrypt(text, key="mercedes")
-keyword = c.cryptoanalysis(enc)
-print(c.decrypt(enc, keyword))
