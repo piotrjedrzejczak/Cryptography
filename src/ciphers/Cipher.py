@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
+
 class Cipher(ABC):
-    
     @abstractmethod
     def encrypt(self):
         pass
@@ -13,7 +13,7 @@ class Cipher(ABC):
     @abstractmethod
     def cryptoanalysis(self):
         pass
-    
+
     @abstractmethod
     def bruteforce(self):
         pass
