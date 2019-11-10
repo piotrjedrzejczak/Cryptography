@@ -8,7 +8,7 @@
 
 #### Currently Supported Ciphers
 
-    - Caesars Cipher (-c)
+    - Caesar's Cipher (-c)
     - Affine Cipher (-a)
     - Vigenere Cipher (-v)
 
