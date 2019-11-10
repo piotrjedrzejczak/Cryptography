@@ -1,5 +1,3 @@
-.vscode/settings.json
-.vscode/launch.json
+*.json
 *.pyc
 *.txt
-Lab1/cli.py
