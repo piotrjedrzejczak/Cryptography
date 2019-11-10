@@ -3,46 +3,53 @@ from src.ciphers.Cipher import Cipher
 
 
 class CaesarZ26(Cipher):
-    __valid_keys = set(range(0, 26))
-    __charset = set(ascii_lowercase)
+    __valid_keys = set(range(26))
+    __alphabet = set(ascii_lowercase)
 
     @classmethod
     def encrypt(cls, text, key):
-        if key in cls.__valid_keys:
-            encrypted = ""
-            for char in text:
-                if char in cls.__charset:
-                    encrypted += chr((ord(char.lower()) + key - 97) % 26 + 97)
-                else:
-                    encrypted += char
-            return encrypted
-        else:
-            raise KeyError(f"Invalid Key {key}")
+        key = cls._check_key(key)
+        return "".join(
+            [
+                chr((ord(char.lower()) + key - 97) % 26 + 97)
+                if char in cls.__alphabet
+                else char
+                for char in text
+            ]
+        )
 
     @classmethod
     def decrypt(cls, text, key):
-        if key in cls.__valid_keys:
-            decrypted = ""
-            for char in text:
-                if char in cls.__charset:
-                    decrypted += chr((ord(char.lower()) - key - 97) % 26 + 97)
-                else:
-                    decrypted += char
-            return decrypted
-        else:
-            raise KeyError(f"Invalid Key {key}")
+        key = cls._check_key(key)
+        return "".join(
+            [
+                chr((ord(char.lower()) - key - 97) % 26 + 97)
+                if char in cls.__alphabet
+                else char
+                for char in text
+            ]
+        )
 
     @classmethod
     def cryptoanalysis(cls, encrypted, plain):
-        for key in range(len(cls.__charset)):
+        for key in range(len(cls.__alphabet)):
             decrypted = cls.decrypt(encrypted, key)
             if decrypted.startswith(plain):
-                return key, decrypted
+                return decrypted, key
         raise KeyError("Valid Key Not Found")
 
     @classmethod
     def bruteforce(cls, text):
-        results = ""
-        for key in range(len(cls.__charset)):
-            results += cls.decrypt(text, key) + "\n"
-        return results
+        return ''.join(
+            [
+                cls.decrypt(text, key) + "\n"
+                for key in range(len(cls.__alphabet))
+            ]
+        )
+
+    @classmethod
+    def _check_key(cls, key):
+        if int(key) in cls.__valid_keys:
+            return int(key)
+        else:
+            raise KeyError(f"Wrong Key {key}.")

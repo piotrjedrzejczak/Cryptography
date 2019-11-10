@@ -4,13 +4,14 @@ from string import ascii_lowercase as ascii_low
 from itertools import cycle
 from collections import Counter
 from math import fsum
+from re import sub
 
 
 class VigenereZ26(Cipher):
 
     __max_keyword_length = 1000
     __alphabet = {char: enum for enum, char in enumerate(ascii_low)}
-    __english = {
+    __english_ioc = {
         "a": 8.15,
         "b": 1.44,
         "c": 2.76,
@@ -41,59 +42,72 @@ class VigenereZ26(Cipher):
 
     @classmethod
     def encrypt(cls, text, key):
-        key = cycle(key)
-        return ''.join(
+        key = cls._check_key(key)
+        return "".join(
             [
                 chr((ord(char) + cls.__alphabet[next(key)] - 97) % 26 + 97)
+                if char in cls.__alphabet.keys()
+                else char
                 for char in text
             ]
         )
 
     @classmethod
     def decrypt(cls, text, key):
-        key = cycle(key)
-        return ''.join(
+        key = cls._check_key(key)
+        return "".join(
             [
                 chr((ord(char) - cls.__alphabet[next(key)] - 97) % 26 + 97)
+                if char in cls.__alphabet.keys()
+                else char
                 for char in text
             ]
         )
 
     @classmethod
     def cryptoanalysis(cls, text):
-        kwlen = cls._keyword_length(text)
-        if kwlen > 0:
-            ceasar = CaesarZ26()
-            # Rearrange the text into columns, one for each keyword letter
-            rearranged = [
-                ''.join(text[index::kwlen])
-                for index in range(kwlen)
-            ]
-            keyword = ''
-            for column in rearranged:
-                distances = {}
-                for char, enum in cls.__alphabet.items():
-                    decrypted = ceasar.decrypt(column, enum)
-                    frequencies = {
-                        # Turn frequencies into percentage-like values
-                        key: (value / len(column) * 100)
-                        for key, value in Counter(decrypted).items()
-                    }
-                    distances[fsum(
+        normalized = cls._normalize_text(text)
+        kwlen = cls._keyword_length(normalized)
+        ceasar = CaesarZ26()
+        # Rearrange the text into columns, one for each keyword letter
+        rearranged = [
+            "".join(normalized[index::kwlen]) for index in range(kwlen)
+        ]
+        keyword = ""
+        for column in rearranged:
+            distances = {}
+            for char, enum in cls.__alphabet.items():
+                decrypted = ceasar.decrypt(column, enum)
+                frequencies = {
+                    # Turn frequencies into percentage-like values
+                    key: (value / len(column) * 100)
+                    for key, value in Counter(decrypted).items()
+                }
+                distances[fsum(
                         [
-                            abs(cls.__english[key] - frequencies.get(key, 0))
-                            for key in cls.__english.keys()
+                            abs(cls.__english_ioc[key]
+                                - frequencies.get(key, 0))
+                            for key in cls.__english_ioc.keys()
                         ]
-                    )] = char
-                # Add best match to keyword
-                keyword += distances[min(distances.keys())]
-            return keyword
-        else:
-            raise ValueError('Key length cannot be 0.')
+                    )
+                ] = char
+            # Add best match to keyword
+            keyword += distances[min(distances.keys())]
+        return keyword
 
     @classmethod
     def bruteforce(cls):
         raise NotImplementedError
+
+    @classmethod
+    def _check_key(cls, key):
+        if type(key) != str:
+            raise TypeError(f'Expected str, got {type(key)}')
+        if len(key) == 0:
+            raise ValueError('Key length cannot be 0')
+        return cycle(''.join(
+            [char for char in key if char in cls.__alphabet.keys()]
+        ))
 
     @classmethod
     def _coincidence_index(cls, text):
@@ -110,7 +124,7 @@ class VigenereZ26(Cipher):
         for kwlen in range(1, cls.__max_keyword_length):
             coincidences = []
             for m in range(kwlen + 1):
-                subtext = ''.join(
+                subtext = "".join(
                     [
                         letter for enum, letter in enumerate(text)
                         if enum % kwlen == m
@@ -119,4 +133,11 @@ class VigenereZ26(Cipher):
                 coincidences.append(cls._coincidence_index(subtext))
             if fsum(coincidences) / float(len(coincidences)) > 0.056:
                 return kwlen
-        return 0
+        raise KeyError(
+            'Failed to find keyword length, try increasing the cap.\n'
+            + f'Current cap: {cls.__max_keyword_length}'
+        )
+
+    @classmethod
+    def _normalize_text(cls, text):
+        return sub(r'[^a-zA-Z]+', '', text).lower()
