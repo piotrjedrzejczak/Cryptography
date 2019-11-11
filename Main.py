@@ -51,11 +51,10 @@ def main(ctx, cipher):
 )
 @pass_context
 def encrypt(ctx):
-    cipher = ctx.obj['CIPHER']
     text = read_file(PLAINTEXT)
     key = read_file(KEY)
-    encrypted_text = cipher.encrypt(text, key)
-    write_file(encrypted_text, ENCRYPTED)
+    encrypted = ctx.obj['CIPHER'].encrypt(text, key)
+    write_file(encrypted, ENCRYPTED)
 
 
 @main.command(
@@ -64,11 +63,10 @@ def encrypt(ctx):
 )
 @pass_context
 def decrypt(ctx):
-    cipher = ctx.obj['CIPHER']
     text = read_file(ENCRYPTED)
     key = read_file(KEY)
-    encrypted_text = cipher.encrypt(text, key)
-    write_file(encrypted_text, DECRYPTED)
+    encrypted = ctx.obj['CIPHER'].encrypt(text, key)
+    write_file(encrypted, DECRYPTED)
 
 
 @main.command(
@@ -77,15 +75,14 @@ def decrypt(ctx):
 )
 @pass_context
 def cryptoanalysis(ctx):
-    cipher = ctx.obj['CIPHER']
     text = read_file(ENCRYPTED)
-    if isinstance(cipher, (AffineZ26, CaesarZ26)):
-        plain_sample = read_file(EXTRATEXT)
-        decrypted_text, key = cipher.cryptoanalysis(text, plain_sample)
+    if isinstance(ctx.obj['CIPHER'], (AffineZ26, CaesarZ26)):
+        sample = read_file(EXTRATEXT)
+        decrypted, key = ctx.obj['CIPHER'].cryptoanalysis(text, sample)
     else:
-        key = cipher.cryptoanalysis(text)
-        decrypted_text = cipher.decrypt(text, key)
-    write_file(decrypted_text, DECRYPTED)
+        key = ctx.obj['CIPHER'].cryptoanalysis(text)
+        decrypted = ctx.obj['CIPHER'].decrypt(text, key)
+    write_file(decrypted, DECRYPTED)
     write_file(key, NEWKEY)
 
 
@@ -95,9 +92,8 @@ def cryptoanalysis(ctx):
 )
 @pass_context
 def bruteforce(ctx):
-    cipher = ctx.obj['CIPHER']
     encrypted = read_file(ENCRYPTED)
-    decryptions = cipher.bruteforce(encrypted)
+    decryptions = ctx.obj['CIPHER'].bruteforce(encrypted)
     write_file(decryptions, DECRYPTED)
 
 
