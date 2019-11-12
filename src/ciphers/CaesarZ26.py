@@ -1,5 +1,5 @@
 from string import ascii_lowercase
-from src.ciphers.Cipher import Cipher
+from ciphers.Cipher import Cipher
 
 
 class CaesarZ26(Cipher):
@@ -12,7 +12,7 @@ class CaesarZ26(Cipher):
         return "".join(
             [
                 chr((ord(char.lower()) + key - 97) % 26 + 97)
-                if char in cls.__alphabet
+                if char.lower() in cls.__alphabet
                 else char
                 for char in text
             ]
