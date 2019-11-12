@@ -45,8 +45,9 @@ class VigenereZ26(Cipher):
         key = cls._check_key(key)
         return "".join(
             [
-                chr((ord(char) + cls.__alphabet[next(key)] - 97) % 26 + 97)
-                if char in cls.__alphabet
+                chr((ord(char.lower()) + cls.__alphabet[next(key)] - 97)
+                    % 26 + 97)
+                if char.lower() in cls.__alphabet
                 else char
                 for char in text
             ]
@@ -57,8 +58,9 @@ class VigenereZ26(Cipher):
         key = cls._check_key(key)
         return "".join(
             [
-                chr((ord(char) - cls.__alphabet[next(key)] - 97) % 26 + 97)
-                if char in cls.__alphabet
+                chr((ord(char.lower()) - cls.__alphabet[next(key)] - 97)
+                    % 26 + 97)
+                if char.lower() in cls.__alphabet
                 else char
                 for char in text
             ]
