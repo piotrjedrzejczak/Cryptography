@@ -1,5 +1,5 @@
 from string import ascii_lowercase
-from src.ciphers.Cipher import Cipher
+from ciphers.Cipher import Cipher
 
 
 class AffineZ26(Cipher):
@@ -29,7 +29,7 @@ class AffineZ26(Cipher):
                     (key1 * cls.__alphabet[char.lower()] + key2)
                     % len(cls.__alphabet)
                 ]
-                if char in cls.__alphabet.keys()
+                if char.lower() in cls.__alphabet
                 else char
                 for char in text
             ]
@@ -45,7 +45,7 @@ class AffineZ26(Cipher):
                     * (cls.__alphabet[char.lower()] - key2)
                     % len(cls.__alphabet)
                 ]
-                if char in cls.__alphabet.keys()
+                if char.lower() in cls.__alphabet
                 else char
                 for char in text
             ]
@@ -53,8 +53,8 @@ class AffineZ26(Cipher):
 
     @classmethod
     def cryptoanalysis(cls, encrypted, plain):
-        for key1 in cls.__inverses.keys():
-            for key2 in cls.__inverted_alphabet.keys():
+        for key1 in cls.__inverses:
+            for key2 in cls.__inverted_alphabet:
                 decrypted = cls.decrypt(encrypted, f"{key1} {key2}")
                 if decrypted.startswith(plain):
                     return decrypted, f"{key1} {key2}"
@@ -65,8 +65,8 @@ class AffineZ26(Cipher):
         return ''.join(
             [
                 cls.decrypt(text, f'{key1} {key2}') + "\n"
-                for key2 in cls.__inverted_alphabet.keys()
-                for key1 in cls.__inverses.keys()
+                for key2 in cls.__inverted_alphabet
+                for key1 in cls.__inverses
             ]
         )
 
@@ -77,12 +77,12 @@ class AffineZ26(Cipher):
             if key1 not in cls.__inverses:
                 raise KeyError(
                     f"First Key is Invalid: {key1}"
-                    + f"Valid Keys: {cls.__inverses.keys()}"
+                    + f"Valid Keys: {cls.__inverses}"
                 )
             if key2 not in cls.__inverted_alphabet:
                 raise KeyError(
                     f"Second Key is Invalid: {key2}"
-                    + f"Valid Keys: {cls.__inverted_alphabet.keys()}"
+                    + f"Valid Keys: {cls.__inverted_alphabet}"
                 )
             return key1, key2
         except ValueError:

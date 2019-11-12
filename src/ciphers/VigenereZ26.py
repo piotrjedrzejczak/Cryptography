@@ -1,5 +1,5 @@
-from src.ciphers.Cipher import Cipher
-from src.ciphers.CaesarZ26 import CaesarZ26
+from ciphers.Cipher import Cipher
+from ciphers.CaesarZ26 import CaesarZ26
 from string import ascii_lowercase as ascii_low
 from itertools import cycle
 from collections import Counter
@@ -46,7 +46,7 @@ class VigenereZ26(Cipher):
         return "".join(
             [
                 chr((ord(char) + cls.__alphabet[next(key)] - 97) % 26 + 97)
-                if char in cls.__alphabet.keys()
+                if char in cls.__alphabet
                 else char
                 for char in text
             ]
@@ -58,7 +58,7 @@ class VigenereZ26(Cipher):
         return "".join(
             [
                 chr((ord(char) - cls.__alphabet[next(key)] - 97) % 26 + 97)
-                if char in cls.__alphabet.keys()
+                if char in cls.__alphabet
                 else char
                 for char in text
             ]
@@ -87,12 +87,12 @@ class VigenereZ26(Cipher):
                         [
                             abs(cls.__english_ioc[key]
                                 - frequencies.get(key, 0))
-                            for key in cls.__english_ioc.keys()
+                            for key in cls.__english_ioc
                         ]
                     )
                 ] = char
             # Add best match to keyword
-            keyword += distances[min(distances.keys())]
+            keyword += distances[min(distances)]
         return keyword
 
     @classmethod
@@ -106,7 +106,7 @@ class VigenereZ26(Cipher):
         if len(key) == 0:
             raise ValueError('Key length cannot be 0')
         return cycle(''.join(
-            [char for char in key if char in cls.__alphabet.keys()]
+            [char for char in key if char in cls.__alphabet]
         ))
 
     @classmethod
