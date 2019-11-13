@@ -2,7 +2,7 @@ from string import ascii_lowercase
 from ciphers.Cipher import Cipher
 
 
-class CaesarZ26(Cipher):
+class Caesar(Cipher):
     __valid_keys = set(range(26))
     __alphabet = set(ascii_lowercase)
 
@@ -31,7 +31,7 @@ class CaesarZ26(Cipher):
         )
 
     @classmethod
-    def cryptoanalysis(cls, encrypted, plain):
+    def cryptanalysis(cls, encrypted, plain):
         for key in range(len(cls.__alphabet)):
             decrypted = cls.decrypt(encrypted, key)
             if decrypted.startswith(plain):
@@ -39,7 +39,7 @@ class CaesarZ26(Cipher):
         raise KeyError("Valid Key Not Found")
 
     @classmethod
-    def bruteforce(cls, text):
+    def crack(cls, text):
         return ''.join(
             [
                 cls.decrypt(text, key) + "\n"

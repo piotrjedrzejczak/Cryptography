@@ -11,9 +11,9 @@ class Cipher(ABC):
         pass
 
     @abstractmethod
-    def cryptoanalysis(self):
+    def cryptanalysis(self):
         pass
 
     @abstractmethod
-    def bruteforce(self):
+    def crack(self):
         pass

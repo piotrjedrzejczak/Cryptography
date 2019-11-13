@@ -1,6 +1,6 @@
-from ciphers.CaesarZ26 import CaesarZ26
-from ciphers.AffineZ26 import AffineZ26
-from ciphers.VigenereZ26 import VigenereZ26
+from ciphers.Caesar import Caesar
+from ciphers.Affine import Affine
+from ciphers.Vigenere import Vigenere
 from utils.utils import read_file
 
 
@@ -20,37 +20,37 @@ VIGENERE_KEY = 'kryptografia'
 
 
 def test_ceasars_encryption():
-    encrypt = CaesarZ26.encrypt(PLAINTEXT, CAESARS_KEY)
+    encrypt = Caesar.encrypt(PLAINTEXT, CAESARS_KEY)
     assert encrypt == CAESARS_ENCRYPTED
 
 
 def test_ceasars_decryption():
-    decrypt = CaesarZ26.decrypt(CAESARS_ENCRYPTED, CAESARS_KEY)
+    decrypt = Caesar.decrypt(CAESARS_ENCRYPTED, CAESARS_KEY)
     assert decrypt == PLAINTEXT
 
 
 def test_affine_encryption():
-    encrypt = AffineZ26.encrypt(PLAINTEXT, AFFINE_KEYS)
+    encrypt = Affine.encrypt(PLAINTEXT, AFFINE_KEYS)
     assert encrypt == AFFINE_ENCRYPTED
 
 
 def test_affine_decryption():
-    decrypt = AffineZ26.decrypt(AFFINE_ENCRYPTED, AFFINE_KEYS)
+    decrypt = Affine.decrypt(AFFINE_ENCRYPTED, AFFINE_KEYS)
     assert decrypt == PLAINTEXT
 
 
 def test_vigenere_encryption():
-    encrypt = VigenereZ26.encrypt(PLAINTEXT, VIGENERE_KEY)
+    encrypt = Vigenere.encrypt(PLAINTEXT, VIGENERE_KEY)
     assert encrypt == VIGENERE_ENCRYPTED
 
 
 def test_vigenere_decryption():
-    decrypt = VigenereZ26.decrypt(VIGENERE_ENCRYPTED, VIGENERE_KEY)
+    decrypt = Vigenere.decrypt(VIGENERE_ENCRYPTED, VIGENERE_KEY)
     assert decrypt == PLAINTEXT
 
 
 def test_vigenere_cryptoanalysis():
     text = read_file(LARGE_PLAINTEXT_PATH)
-    encrypted = VigenereZ26.encrypt(text, VIGENERE_KEY)
-    keyword = VigenereZ26.cryptoanalysis(encrypted)
+    encrypted = Vigenere.encrypt(text, VIGENERE_KEY)
+    keyword = Vigenere.cryptanalysis(encrypted)
     assert keyword == VIGENERE_KEY

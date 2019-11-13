@@ -1,14 +1,14 @@
 from click import pass_context, option, group
-from src.ciphers.CaesarZ26 import CaesarZ26
-from src.ciphers.AffineZ26 import AffineZ26
-from src.ciphers.VigenereZ26 import VigenereZ26
+from src.ciphers.Caesar import Caesar
+from src.ciphers.Affine import Affine
+from src.ciphers.Vigenere import Vigenere
 from src.utils.utils import read_file, write_file
 
 # Functionality Support, used in --help
 ENCRYPTION = ['Caesars', 'Affine', 'Vigenere']
 DECRYPTION = ['Caesars', 'Affine', 'Vigenere']
-CRYPTOANALYSIS = ['Caesars', 'Affine', 'Vigenere']
-BRUTEFORCE = ['Caesars', 'Affine']
+CRYPTANALYSIS = ['Caesars', 'Affine', 'Vigenere']
+CRACK = ['Caesars', 'Affine']
 
 # Filepaths
 ORIGINALTEXT = ['src', 'text_files', 'orig.txt']
@@ -21,9 +21,9 @@ DECRYPTED = ['src', 'text_files', 'decrypt.txt']
 
 
 @group(chain=True)
-@option('-c', 'cipher', flag_value=CaesarZ26, help='Ceasars Cipher')
-@option('-a', 'cipher', flag_value=AffineZ26, help='Affine Cipher')
-@option('-v', 'cipher', flag_value=VigenereZ26, help='Vigenere Cipher')
+@option('-c', 'cipher', flag_value=Caesar, help='Ceasars Cipher')
+@option('-a', 'cipher', flag_value=Affine, help='Affine Cipher')
+@option('-v', 'cipher', flag_value=Vigenere, help='Vigenere Cipher')
 @pass_context
 def main(ctx, cipher):
     '''
@@ -47,7 +47,7 @@ def main(ctx, cipher):
 
 @main.command(
     'e',
-    help=f'Encrypting, Supported: {ENCRYPTION}'
+    help=f'Encryption, Supported: {ENCRYPTION}'
 )
 @pass_context
 def encrypt(ctx):
@@ -59,7 +59,7 @@ def encrypt(ctx):
 
 @main.command(
     'd',
-    help=f'Decrypting, Supported: {DECRYPTION}'
+    help=f'Decryption, Supported: {DECRYPTION}'
 )
 @pass_context
 def decrypt(ctx):
@@ -71,16 +71,16 @@ def decrypt(ctx):
 
 @main.command(
     'k',
-    help=f'Cryptoanalysis, Supported: {CRYPTOANALYSIS}'
+    help=f'Cryptanalysis, Supported: {CRYPTANALYSIS}'
 )
 @pass_context
-def cryptoanalysis(ctx):
+def cryptanalysis(ctx):
     text = read_file(ENCRYPTED)
-    if isinstance(ctx.obj['CIPHER'], (AffineZ26, CaesarZ26)):
+    if isinstance(ctx.obj['CIPHER'], (Affine, Caesar)):
         sample = read_file(EXTRATEXT)
-        decrypted, key = ctx.obj['CIPHER'].cryptoanalysis(text, sample)
+        decrypted, key = ctx.obj['CIPHER'].cryptanalysis(text, sample)
     else:
-        key = ctx.obj['CIPHER'].cryptoanalysis(text)
+        key = ctx.obj['CIPHER'].cryptanalysis(text)
         decrypted = ctx.obj['CIPHER'].decrypt(text, key)
     write_file(decrypted, DECRYPTED)
     write_file(key, NEWKEY)
@@ -88,12 +88,12 @@ def cryptoanalysis(ctx):
 
 @main.command(
     'j',
-    help=f'Bruteforce Deciphering, Supported: {BRUTEFORCE}'
+    help=f'Cracking, Supported: {CRACK}'
 )
 @pass_context
-def bruteforce(ctx):
+def cracking(ctx):
     encrypted = read_file(ENCRYPTED)
-    decryptions = ctx.obj['CIPHER'].bruteforce(encrypted)
+    decryptions = ctx.obj['CIPHER'].crack(encrypted)
     write_file(decryptions, DECRYPTED)
 
 

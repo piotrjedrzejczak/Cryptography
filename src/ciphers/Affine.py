@@ -2,7 +2,7 @@ from string import ascii_lowercase
 from ciphers.Cipher import Cipher
 
 
-class AffineZ26(Cipher):
+class Affine(Cipher):
     __alphabet = dict(zip(ascii_lowercase, range(26)))
     __inverted_alphabet = {code: letter for letter, code in __alphabet.items()}
     __inverses = {

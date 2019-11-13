@@ -14,4 +14,3 @@ def write_file(text, filepath):
     with open(path.join(getcwd(), *filepath), "w") as f:
         # Clearing file
         open(path.join(getcwd(), *filepath), "w").close()
-        f.write(text)

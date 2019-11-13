@@ -1,5 +1,5 @@
 from ciphers.Cipher import Cipher
-from ciphers.CaesarZ26 import CaesarZ26
+from ciphers.Caesar import Caesar
 from string import ascii_lowercase as ascii_low
 from itertools import cycle
 from collections import Counter
@@ -7,7 +7,7 @@ from math import fsum
 from re import sub
 
 
-class VigenereZ26(Cipher):
+class Vigenere(Cipher):
 
     __max_keyword_length = 1000
     __alphabet = {char: enum for enum, char in enumerate(ascii_low)}
@@ -67,10 +67,10 @@ class VigenereZ26(Cipher):
         )
 
     @classmethod
-    def cryptoanalysis(cls, text):
+    def cryptanalysis(cls, text):
         normalized = cls._normalize_text(text)
         kwlen = cls._keyword_length(normalized)
-        ceasar = CaesarZ26()
+        ceasar = Caesar()
         # Rearrange the text into columns, one for each keyword letter
         rearranged = [
             "".join(normalized[index::kwlen]) for index in range(kwlen)
@@ -98,7 +98,7 @@ class VigenereZ26(Cipher):
         return keyword
 
     @classmethod
-    def bruteforce(cls):
+    def crack(cls):
         raise NotImplementedError
 
     @classmethod
