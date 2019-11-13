@@ -9,13 +9,13 @@ LARGE_PLAINTEXT_PATH = ['src', 'test', 'plain.txt']
 
 PLAINTEXT = 'if the implementation is easy to explain, it may be a good idea.'
 
-CAESARS_ENCRYPTED = 'pm aol ptwsltluahapvu pz lhzf av lewshpu, pa thf il h nvvk pklh.'
+CAESARS_ENCRYPTED = 'pm aol ptwsltluahapvu pz lhzf av lewshpu, pa thf il h nvvk pklh.'  # noqa: E501
 CAESARS_KEY = '7'
 
-AFFINE_ENCRYPTED = 'wh zrc wqflcqcvzizwav wu ciuy za ctfliwv, wz qiy nc i maax wxci.'
+AFFINE_ENCRYPTED = 'wh zrc wqflcqcvzizwav wu ciuy za ctfliwv, wz qiy nc i maax wxci.'  # noqa: E501
 AFFINE_KEYS = '5 8'
 
-VIGENERE_ENCRYPTED = 'sw rwx wsgljuexkyibct zs jisi km tqdrris, qt wrw qx o mfoi qdor.'
+VIGENERE_ENCRYPTED = 'sw rwx wsgljuexkyibct zs jisi km tqdrris, qt wrw qx o mfoi qdor.'  # noqa: E501
 VIGENERE_KEY = 'kryptografia'
 
 
