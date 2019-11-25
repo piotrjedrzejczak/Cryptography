@@ -2,12 +2,13 @@ from click import pass_context, option, group
 from src.ciphers.Caesar import Caesar
 from src.ciphers.Affine import Affine
 from src.ciphers.Vigenere import Vigenere
-from src.utils.utils import read_file, write_file
+from src.ciphers.BitwiseXOR import BitwiseXOR
+from src.utils.utils import read_file, write_file, normalize_text
 
 # Functionality Support, used in --help
-ENCRYPTION = ['Caesars', 'Affine', 'Vigenere']
-DECRYPTION = ['Caesars', 'Affine', 'Vigenere']
-CRYPTANALYSIS = ['Caesars', 'Affine', 'Vigenere']
+ENCRYPTION = ['Caesars', 'Affine', 'Vigenere', 'BitwiseXOR']
+DECRYPTION = ['Caesars', 'Affine', 'Vigenere', 'BitwiseXOR']
+CRYPTANALYSIS = ['Caesars', 'Affine', 'Vigenere', 'BitwiseXOR']
 CRACK = ['Caesars', 'Affine']
 
 # Filepaths
@@ -24,6 +25,7 @@ DECRYPTED = ['src', 'text_files', 'decrypt.txt']
 @option('-c', 'cipher', flag_value=Caesar, help='Ceasars Cipher')
 @option('-a', 'cipher', flag_value=Affine, help='Affine Cipher')
 @option('-v', 'cipher', flag_value=Vigenere, help='Vigenere Cipher')
+@option('-b', 'cipher', flag_value=BitwiseXOR, help='Bitwise XOR')
 @pass_context
 def main(ctx, cipher):
     '''
@@ -65,8 +67,8 @@ def encrypt(ctx):
 def decrypt(ctx):
     text = read_file(ENCRYPTED)
     key = read_file(KEY)
-    encrypted = ctx.obj['CIPHER'].encrypt(text, key)
-    write_file(encrypted, DECRYPTED)
+    decrypted = ctx.obj['CIPHER'].decrypt(text, key)
+    write_file(decrypted, DECRYPTED)
 
 
 @main.command(
@@ -76,7 +78,8 @@ def decrypt(ctx):
 @pass_context
 def cryptanalysis(ctx):
     text = read_file(ENCRYPTED)
-    if isinstance(ctx.obj['CIPHER'], (Affine, Caesar)):
+    if (ctx.obj['CIPHER'] == Affine or
+            ctx.obj['CIPHER'] == Caesar):
         sample = read_file(EXTRATEXT)
         decrypted, key = ctx.obj['CIPHER'].cryptanalysis(text, sample)
     else:
@@ -95,6 +98,17 @@ def cracking(ctx):
     encrypted = read_file(ENCRYPTED)
     decryptions = ctx.obj['CIPHER'].crack(encrypted)
     write_file(decryptions, DECRYPTED)
+
+
+@main.command(
+    'p',
+    help='Normalize Text'
+)
+@pass_context
+def normalized(ctx):
+    orig = read_file(ORIGINALTEXT)
+    normalized = normalize_text(orig)
+    write_file(normalized, PLAINTEXT)
 
 
 if __name__ == '__main__':
