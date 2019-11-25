@@ -10,14 +10,16 @@
 
     - Caesar's Cipher (-c)
     - Affine Cipher (-a)
-    - Vigenere Cipher (-v)
+    - Vigenere Cipher (v)
+    - Bitwise XOR (-b)
 
 #### Functionalities
 
     - Encryption (e)
     - Decryption (d)
-    - Cryptoanalysis (k)
+    - Cryptanalysis (k)
     - Bruteforce Decryption (j) [Only Caesar's and Affine]
+    - Text Normalization (p) [-> Lowercase, stripped text with spaces]
 
 #### IO Text Files
 
@@ -25,6 +27,6 @@
     - decrypt.txt  > Decrypted text.
     - crypto.txt   > Encrypted text.
     - key.txt      > Input file for key/keys.
-    - new-key.txt  > Output file for key/keys found during cryptoanalysis.
-    - orig.txt     > Raw text - Automatically normalized.
-    - extra.txt    > Partially decrypted plain text - Used in cryptoanalysis in some ciphers.
+    - new-key.txt  > Output file for key/keys found during cryptanalysis.
+    - orig.txt     > Raw text.
+    - extra.txt    > Partially decrypted plain text - Used in cryptanalysis in some ciphers.
