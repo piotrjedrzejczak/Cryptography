@@ -1,56 +1,98 @@
 from ciphers.Caesar import Caesar
 from ciphers.Affine import Affine
 from ciphers.Vigenere import Vigenere
+from ciphers.BitwiseXOR import BitwiseXOR
 from utils.utils import read_file
 
 
-EMPTYFILE = ''
-LARGE_PLAINTEXT_PATH = ['src', 'test', 'plain.txt']
+PLAINTEXT = ['src', 'test', 'text_files', 'plain.txt']
 
-PLAINTEXT = 'if the implementation is easy to explain, it may be a good idea.'
+CAESARS_KEY = ['src', 'test', 'text_files', 'caesar', 'key.txt']
+CAESARS_ENCRYPTED = ['src', 'test', 'text_files', 'caesar', 'crypto.txt']
 
-CAESARS_ENCRYPTED = 'pm aol ptwsltluahapvu pz lhzf av lewshpu, pa thf il h nvvk pklh.'  # noqa: E501
-CAESARS_KEY = '7'
+AFFINE_KEYS = ['src', 'test', 'text_files', 'affine', 'key.txt']
+AFFINE_ENCRYPTED = ['src', 'test', 'text_files', 'affine', 'crypto.txt']
 
-AFFINE_ENCRYPTED = 'wh zrc wqflcqcvzizwav wu ciuy za ctfliwv, wz qiy nc i maax wxci.'  # noqa: E501
-AFFINE_KEYS = '5 8'
+VIGENERE_KEY = ['src', 'test', 'text_files', 'vigenere', 'key.txt']
+VIGENERE_ENCRYPTED = ['src', 'test', 'text_files', 'vigenere', 'crypto.txt']
 
-VIGENERE_ENCRYPTED = 'sw rwx wsgljuexkyibct zs jisi km tqdrris, qt wrw qx o mfoi qdor.'  # noqa: E501
-VIGENERE_KEY = 'kryptografia'
+XOR_KEY = ['src', 'test', 'text_files', 'xor', 'key.txt']
+XOR_ENCRYPTED = ['src', 'test', 'text_files', 'xor', 'crypto.txt']
 
 
 def test_ceasars_encryption():
-    encrypt = Caesar.encrypt(PLAINTEXT, CAESARS_KEY)
-    assert encrypt == CAESARS_ENCRYPTED
+    testf = read_file(CAESARS_ENCRYPTED)
+    plainf = read_file(PLAINTEXT)
+    keyf = read_file(CAESARS_KEY)
+    encrypted = Caesar.encrypt(plainf, keyf)
+    assert encrypted == testf
 
 
 def test_ceasars_decryption():
-    decrypt = Caesar.decrypt(CAESARS_ENCRYPTED, CAESARS_KEY)
-    assert decrypt == PLAINTEXT
+    testf = read_file(PLAINTEXT)
+    crypto = read_file(CAESARS_ENCRYPTED)
+    keyf = read_file(CAESARS_KEY)
+    decrypted = Caesar.decrypt(crypto, keyf)
+    assert decrypted == testf
 
 
 def test_affine_encryption():
-    encrypt = Affine.encrypt(PLAINTEXT, AFFINE_KEYS)
-    assert encrypt == AFFINE_ENCRYPTED
+    testf = read_file(AFFINE_ENCRYPTED)
+    plainf = read_file(PLAINTEXT)
+    keyf = read_file(AFFINE_KEYS)
+    encrypted = Affine.encrypt(plainf, keyf)
+    assert encrypted == testf
 
 
 def test_affine_decryption():
-    decrypt = Affine.decrypt(AFFINE_ENCRYPTED, AFFINE_KEYS)
-    assert decrypt == PLAINTEXT
+    testf = read_file(PLAINTEXT)
+    crypto = read_file(AFFINE_ENCRYPTED)
+    keyf = read_file(AFFINE_KEYS)
+    decrypted = Affine.decrypt(crypto, keyf)
+    assert decrypted == testf
 
 
 def test_vigenere_encryption():
-    encrypt = Vigenere.encrypt(PLAINTEXT, VIGENERE_KEY)
-    assert encrypt == VIGENERE_ENCRYPTED
+    testf = read_file(VIGENERE_ENCRYPTED)
+    plainf = read_file(PLAINTEXT)
+    keyf = read_file(VIGENERE_KEY)
+    encrypted = Vigenere.encrypt(plainf, keyf)
+    assert encrypted == testf
 
 
 def test_vigenere_decryption():
-    decrypt = Vigenere.decrypt(VIGENERE_ENCRYPTED, VIGENERE_KEY)
-    assert decrypt == PLAINTEXT
+    testf = read_file(PLAINTEXT)
+    crypto = read_file(VIGENERE_ENCRYPTED)
+    keyf = read_file(VIGENERE_KEY)
+    decrypted = Vigenere.decrypt(crypto, keyf)
+    assert decrypted == testf
 
 
 def test_vigenere_cryptoanalysis():
-    text = read_file(LARGE_PLAINTEXT_PATH)
-    encrypted = Vigenere.encrypt(text, VIGENERE_KEY)
-    keyword = Vigenere.cryptanalysis(encrypted)
-    assert keyword == VIGENERE_KEY
+    testf = read_file(VIGENERE_KEY)
+    crypto = read_file(VIGENERE_ENCRYPTED)
+    keyword = Vigenere.cryptanalysis(crypto)
+    assert keyword == testf
+
+
+def test_bitwisexor_encryption():
+    text = read_file(PLAINTEXT)
+    testf = read_file(XOR_ENCRYPTED)
+    keyf = read_file(XOR_KEY)
+    encrypted = BitwiseXOR.encrypt(text, keyf)
+    assert encrypted == testf
+
+
+def test_bitwisexor_decryption():
+    text = read_file(XOR_ENCRYPTED)
+    testf = read_file(PLAINTEXT)
+    keyf = read_file(XOR_KEY)
+    decrypted = BitwiseXOR.decrypt(text, keyf)
+    assert decrypted == testf
+
+
+def test_bitwisexor_cryptanalysis():
+    text = read_file(XOR_ENCRYPTED)
+    testf = read_file(XOR_KEY)
+    kw = BitwiseXOR.cryptanalysis(text)
+    assert kw == testf
