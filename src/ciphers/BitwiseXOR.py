@@ -5,8 +5,6 @@ from utils.const import ENGLISH_IOC
 
 class BitwiseXOR(Cipher):
 
-    __max_keysize = 100
-
     @classmethod
     def encrypt(cls, text, key):
         text = text.encode('ascii')

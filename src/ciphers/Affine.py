@@ -1,35 +1,19 @@
-from string import ascii_lowercase
 from ciphers.Cipher import Cipher
+from utils.const import CHAR_ENUM_ALPHABET, ENUM_CHAR_ALPHABET, Z26_INVERSES
 
 
 class Affine(Cipher):
-    __alphabet = dict(zip(ascii_lowercase, range(26)))
-    __inverted_alphabet = {code: letter for letter, code in __alphabet.items()}
-    __inverses = {
-        1: 1,
-        3: 9,
-        5: 21,
-        7: 15,
-        9: 3,
-        11: 19,
-        15: 7,
-        17: 23,
-        19: 11,
-        21: 5,
-        23: 17,
-        25: 25,
-    }
 
     @classmethod
     def encrypt(cls, text, keys):
         key1, key2 = cls._check_keys(keys)
         return ''.join(
             [
-                cls.__inverted_alphabet[
-                    (key1 * cls.__alphabet[char.lower()] + key2)
-                    % len(cls.__alphabet)
+                ENUM_CHAR_ALPHABET[
+                    (key1 * CHAR_ENUM_ALPHABET[char.lower()] + key2)
+                    % len(CHAR_ENUM_ALPHABET)
                 ]
-                if char.lower() in cls.__alphabet
+                if char.lower() in CHAR_ENUM_ALPHABET
                 else char
                 for char in text
             ]
@@ -40,12 +24,12 @@ class Affine(Cipher):
         key1, key2 = cls._check_keys(keys)
         return ''.join(
             [
-                cls.__inverted_alphabet[
-                    (cls.__inverses[key1])
-                    * (cls.__alphabet[char.lower()] - key2)
-                    % len(cls.__alphabet)
+                ENUM_CHAR_ALPHABET[
+                    (Z26_INVERSES[key1])
+                    * (CHAR_ENUM_ALPHABET[char.lower()] - key2)
+                    % len(CHAR_ENUM_ALPHABET)
                 ]
-                if char.lower() in cls.__alphabet
+                if char.lower() in CHAR_ENUM_ALPHABET
                 else char
                 for char in text
             ]
@@ -53,8 +37,8 @@ class Affine(Cipher):
 
     @classmethod
     def cryptoanalysis(cls, encrypted, plain):
-        for key1 in cls.__inverses:
-            for key2 in cls.__inverted_alphabet:
+        for key1 in Z26_INVERSES:
+            for key2 in ENUM_CHAR_ALPHABET:
                 decrypted = cls.decrypt(encrypted, f"{key1} {key2}")
                 if decrypted.startswith(plain):
                     return decrypted, f"{key1} {key2}"
@@ -65,8 +49,8 @@ class Affine(Cipher):
         return ''.join(
             [
                 cls.decrypt(text, f'{key1} {key2}') + "\n"
-                for key2 in cls.__inverted_alphabet
-                for key1 in cls.__inverses
+                for key2 in ENUM_CHAR_ALPHABET
+                for key1 in Z26_INVERSES
             ]
         )
 
@@ -74,15 +58,15 @@ class Affine(Cipher):
     def _check_keys(cls, keys):
         try:
             key1, key2 = [int(key) for key in keys.strip().split(" ")]
-            if key1 not in cls.__inverses:
+            if key1 not in Z26_INVERSES:
                 raise KeyError(
                     f"First Key is Invalid: {key1}"
-                    + f"Valid Keys: {cls.__inverses}"
+                    + f"Valid Keys: {Z26_INVERSES}"
                 )
-            if key2 not in cls.__inverted_alphabet:
+            if key2 not in ENUM_CHAR_ALPHABET:
                 raise KeyError(
                     f"Second Key is Invalid: {key2}"
-                    + f"Valid Keys: {cls.__inverted_alphabet}"
+                    + f"Valid Keys: {ENUM_CHAR_ALPHABET}"
                 )
             return key1, key2
         except ValueError:
@@ -90,4 +74,3 @@ class Affine(Cipher):
                 f"Not Parsable Keys: {keys}\n"
                 + "Expected Format: FirstKey[SPACE]SecondKey"
             )
-
