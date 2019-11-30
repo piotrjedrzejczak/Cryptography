@@ -23,7 +23,7 @@
     - Bruteforce Decryption (j) [Only Caesar's and Affine]
     - Text Normalization (p) [-> Lowercase, stripped text with spaces]
 
-#### IO Text Files
+#### IO Files
 
     - plain.txt         > Normalized plain text read for encryption.
     - decrypt.txt       > Decrypted text.
