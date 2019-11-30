@@ -1,17 +1,21 @@
 from click import pass_context, option, group
-from src.ciphers.Caesar import Caesar
-from src.ciphers.Affine import Affine
-from src.ciphers.Vigenere import Vigenere
-from src.ciphers.BitwiseXOR import BitwiseXOR
-from src.utils.utils import read_file, write_file, normalize_text
+from ciphers.Caesar import Caesar
+from ciphers.Affine import Affine
+from ciphers.Vigenere import Vigenere
+from ciphers.BitwiseXOR import BitwiseXOR
+from ciphers.ECB import ECB
+from ciphers.CBC import CBC
+from utils.utils import readf, writef, normalize_text
 
 # Functionality Support, used in --help
-ENCRYPTION = ['Caesars', 'Affine', 'Vigenere', 'BitwiseXOR']
+ENCRYPTION = ['Caesars', 'Affine', 'Vigenere', 'BitwiseXOR', 'ECB', 'CBC']
 DECRYPTION = ['Caesars', 'Affine', 'Vigenere', 'BitwiseXOR']
 CRYPTANALYSIS = ['Caesars', 'Affine', 'Vigenere', 'BitwiseXOR']
 CRACK = ['Caesars', 'Affine']
 
 # Filepaths
+ORIGINALIMG = ['src', 'img', 'orig.bmp']
+ENCRYPTEDIMG = ['src', 'img', 'crypto.bmp']
 ORIGINALTEXT = ['src', 'text_files', 'orig.txt']
 PLAINTEXT = ['src', 'text_files', 'plain.txt']
 EXTRATEXT = ['src', 'text_files', 'extra.txt']
@@ -26,6 +30,8 @@ DECRYPTED = ['src', 'text_files', 'decrypt.txt']
 @option('-a', 'cipher', flag_value=Affine, help='Affine Cipher')
 @option('-v', 'cipher', flag_value=Vigenere, help='Vigenere Cipher')
 @option('-b', 'cipher', flag_value=BitwiseXOR, help='Bitwise XOR')
+@option('-ecb', 'cipher', flag_value=ECB, help='Electronic Codebook Demo')
+@option('-cbc', 'cipher', flag_value=CBC, help='Cipher Block Chaining Demo')
 @pass_context
 def main(ctx, cipher):
     '''
@@ -53,10 +59,17 @@ def main(ctx, cipher):
 )
 @pass_context
 def encrypt(ctx):
-    text = read_file(PLAINTEXT)
-    key = read_file(KEY)
-    encrypted = ctx.obj['CIPHER'].encrypt(text, key)
-    write_file(encrypted, ENCRYPTED)
+
+    if (ctx.obj['CIPHER'] == ECB or
+            ctx.obj['CIPHER'] == CBC):
+        img = readf(ORIGINALIMG, binary=True)
+        encrypted = ctx.obj['CIPHER'].encrypt(img)
+        writef(encrypted, ENCRYPTEDIMG, binary=True)
+    else:
+        key = readf(KEY)
+        text = readf(PLAINTEXT)
+        encrypted = ctx.obj['CIPHER'].encrypt(text, key)
+        writef(encrypted, ENCRYPTED)
 
 
 @main.command(
@@ -65,10 +78,10 @@ def encrypt(ctx):
 )
 @pass_context
 def decrypt(ctx):
-    text = read_file(ENCRYPTED)
-    key = read_file(KEY)
+    text = readf(ENCRYPTED)
+    key = readf(KEY)
     decrypted = ctx.obj['CIPHER'].decrypt(text, key)
-    write_file(decrypted, DECRYPTED)
+    writef(decrypted, DECRYPTED)
 
 
 @main.command(
@@ -77,16 +90,16 @@ def decrypt(ctx):
 )
 @pass_context
 def cryptanalysis(ctx):
-    text = read_file(ENCRYPTED)
+    text = readf(ENCRYPTED)
     if (ctx.obj['CIPHER'] == Affine or
             ctx.obj['CIPHER'] == Caesar):
-        sample = read_file(EXTRATEXT)
+        sample = readf(EXTRATEXT)
         decrypted, key = ctx.obj['CIPHER'].cryptanalysis(text, sample)
     else:
         key = ctx.obj['CIPHER'].cryptanalysis(text)
         decrypted = ctx.obj['CIPHER'].decrypt(text, key)
-    write_file(decrypted, DECRYPTED)
-    write_file(key, NEWKEY)
+    writef(decrypted, DECRYPTED)
+    writef(key, NEWKEY)
 
 
 @main.command(
@@ -95,9 +108,9 @@ def cryptanalysis(ctx):
 )
 @pass_context
 def cracking(ctx):
-    encrypted = read_file(ENCRYPTED)
+    encrypted = readf(ENCRYPTED)
     decryptions = ctx.obj['CIPHER'].crack(encrypted)
-    write_file(decryptions, DECRYPTED)
+    writef(decryptions, DECRYPTED)
 
 
 @main.command(
@@ -106,9 +119,9 @@ def cracking(ctx):
 )
 @pass_context
 def normalized(ctx):
-    orig = read_file(ORIGINALTEXT)
+    orig = readf(ORIGINALTEXT)
     normalized = normalize_text(orig)
-    write_file(normalized, PLAINTEXT)
+    writef(normalized, PLAINTEXT)
 
 
 if __name__ == '__main__':
