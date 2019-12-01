@@ -45,7 +45,7 @@ class Affine(Cipher):
         raise KeyError("Valid Keys Not Found")
 
     @classmethod
-    def bruteforce(cls, text):
+    def crack(cls, text):
         return ''.join(
             [
                 cls.decrypt(text, f'{key1} {key2}') + "\n"
