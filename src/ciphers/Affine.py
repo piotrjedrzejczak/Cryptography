@@ -36,7 +36,7 @@ class Affine(Cipher):
         )
 
     @classmethod
-    def cryptoanalysis(cls, encrypted, plain):
+    def cryptanalysis(cls, encrypted, plain):
         for key1 in Z26_INVERSES:
             for key2 in ENUM_CHAR_ALPHABET:
                 decrypted = cls.decrypt(encrypted, f"{key1} {key2}")
