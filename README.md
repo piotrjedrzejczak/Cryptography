@@ -10,10 +10,10 @@
 
     - Caesar's Cipher (-c)
     - Affine Cipher (-a)
-    - Vigenere Cipher (v)
+    - Vigenere Cipher (-v)
     - Bitwise XOR (-b)
-    - Electronic Code Book [EBC] (-ebc)
-    - Cipher Block Chanining [CBC] (-cbc)
+    - Electronic Code Book Mode [EBC] (-ebc)
+    - Cipher Block Chanining Mode [CBC] (-cbc)
 
 #### Functionalities
 
