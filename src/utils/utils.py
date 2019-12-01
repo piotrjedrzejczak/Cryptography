@@ -22,7 +22,7 @@ def writef(text, filepath, binary=False):
         f = open(path.join(getcwd(), *filepath), 'w')
     # Clearing file
     open(path.join(getcwd(), *filepath), 'w').close()
-    f.write(text)
+    f.write(str(text))
 
 
 def normalize_text(text):
