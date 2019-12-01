@@ -12,7 +12,7 @@
     - Affine Cipher (-a)
     - Vigenere Cipher (-v)
     - Bitwise XOR (-b)
-    - Electronic Code Book Mode [EBC] (-ebc)
+    - Electronic Code Book Mode [EBC] (-ecb)
     - Cipher Block Chanining Mode [CBC] (-cbc)
 
 #### Functionalities
